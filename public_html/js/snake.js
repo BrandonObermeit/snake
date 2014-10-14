@@ -60,7 +60,7 @@ function snakeInitialize (){
     snakeLength = 2;
     snakeSize = 20;
     snakeDirection = "down";
-   
+    
     for(var index = snakeLength - 1; index >= 0; index--) {
         snake.push( {
            x: index,
