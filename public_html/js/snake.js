@@ -6,7 +6,9 @@
 var snake;
 var snakeLength;
 var snakeSize;
-var Direction;
+var snakeDirection;
+ 
+var food;
 
 var context;
 var screenWidth;
@@ -36,6 +38,8 @@ function gameInitialize() {
     
     canvas.width = screenWidth;
     canvas.height = screenHeight;
+    
+    document.addEventListener("keydown", keyboardHandler);
 }
 
 function gameLoop() {
@@ -57,7 +61,7 @@ function gameDraw () {
 
 function snakeInitialize (){
     snake = [];
-    snakeLength = 2;
+    snakeLength = 4;
     snakeSize = 20;
     snakeDirection = "down";
     
@@ -83,11 +87,19 @@ function snakeUpdate () {
     var snakeHeadX =snake[0].x;
     var snakeHeadY =snake[0].y;
     
-    snakeHeadX++;
+   
+    if(snakeDirection == "down") {
+        snakeHeadY++;
+    }
+    else if(snakeDirection == "right") {
+        snakeHeadX++;
+    }
+    
+    checkFoodCollision(snakeHeadX, snakeHeadY);
     
     var snakeTail = snake.pop();
     snakeTail.x = snakeHeadX;
-    snakeTail.x = snakeHeadX;
+    snakeTail.y = snakeHeadY;
     snake.unshift(snakeTail);
 }
 
@@ -106,13 +118,34 @@ function foodInitialize () {
 
 function foodDraw () {
     context.fillStyle = "orange";
-    context.fillRect(food.x, food.y, snakeSize, snakeSize);
+    context.fillRect(food.x * snakeSize, food.y * snakeSize, snakeSize, snakeSize);
 }
 
 function setFoodPosition () {
     var randomX = Math.floor(Math.random() * screenWidth);
     var randomY = Math.floor(Math.random() * screenHeight);
     
-    food.x =randomX;
-    food.Y =randomY;
+    food.x = Math.floor(randomX / snakeSize);
+    food.y = Math.floor(randomY / snakeSize);
 }
+
+/*?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!
+ * Input Functions
+ *!?!?!?!?!?!!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!!?!?!?!?!?!?
+ */
+function keyboardHandler(event) {
+    console.log(event);
+    
+    if(event.keyCode == "68" && snakeDirection != "left") {
+        snakeDirection = "right";
+    }
+    else if(event.keyCode == "40" && snakeDirection != "up") {
+        snakeDirection = "down";
+    }
+} 
+    
+    function checkFoodCollision (snakeHeadX, snakeHeadY) {
+        if (snakeHeadX == food.x && snakeHeadY == food.y) {
+        console.log("food colision");    
+    }
+ }
