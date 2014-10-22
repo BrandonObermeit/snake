@@ -22,7 +22,7 @@ var screenHeight;
 gameInitialize();
 snakeInitialize();
 foodInitialize();
-setInterval(gameLoop, 1000/30);
+setInterval(gameLoop, 1000/20);
 
 /*?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!
  * Game functions
@@ -90,12 +90,22 @@ function snakeUpdate () {
    
     if(snakeDirection == "down") {
         snakeHeadY++;
-    }
+    } 
     else if(snakeDirection == "right") {
         snakeHeadX++;
     }
     
-    checkFoodCollision(snakeHeadX, snakeHeadY);
+    if(snakeDirection == "left") {
+        snakeHeadX--;
+    }
+    
+    else if(snakeDirection == "up") {
+        snakeHeadY--;
+    }
+        
+    
+    checkFoodCollisions(snakeHeadX, snakeHeadY);
+    checkWallCollisions(snakeHeadX, snakeHeadY);
     
     var snakeTail = snake.pop();
     snakeTail.x = snakeHeadX;
@@ -139,13 +149,33 @@ function keyboardHandler(event) {
     if(event.keyCode == "68" && snakeDirection != "left") {
         snakeDirection = "right";
     }
-    else if(event.keyCode == "40" && snakeDirection != "up") {
+    else if(event.keyCode == "83" && snakeDirection != "up") {
         snakeDirection = "down";
+    }
+     if(event.keyCode == "65" && snakeDirection != "right") {
+        snakeDirection = "left";
+    }
+    else if(event.keyCode == "87" && snakeDirection != "down") {
+        snakeDirection = "up";
     }
 } 
     
-    function checkFoodCollision (snakeHeadX, snakeHeadY) {
+    /*?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!
+     * Collision handling
+     *!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?
+     */
+    function checkFoodCollisions (snakeHeadX, snakeHeadY) {
         if (snakeHeadX == food.x && snakeHeadY == food.y) {
-        console.log("food colision");    
-    }
- }
+        snake.push({
+            x: 0,
+            y: 0
+        });  
+        snakeLength++;
+    } 
+}
+
+function checkWallCollisions(snakeHeadX, snakeHeadY) {
+    if(snakeHeadX * snakeSize >= screenWidth || snakeHeadX * snakeSize < 0) {
+            console.log("Wall Collision"); 
+}
+}
