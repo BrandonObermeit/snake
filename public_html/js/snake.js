@@ -22,7 +22,7 @@ var screenHeight;
 gameInitialize();
 snakeInitialize();
 foodInitialize();
-setInterval(gameLoop, 1000/20);
+setInterval(gameLoop, 1000/10);
 
 /*?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!
  * Game functions
@@ -61,7 +61,7 @@ function gameDraw () {
 
 function snakeInitialize (){
     snake = [];
-    snakeLength = 4;
+    snakeLength = 15;
     snakeSize = 20;
     snakeDirection = "down";
     
